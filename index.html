@@ -716,9 +716,14 @@
             function updateLeaderboard(filterType) {
                 currentActiveFilter = filterType;
                 TAB_DEFINITIONS.forEach(function(tab) {
-                    document.getElementById(tab.elementId).className = tab.id===filterType
-                        ? 'text-xs font-bold px-4 py-2 rounded-full bg-slate-800 text-white transition-colors'
-                        : 'text-xs font-bold px-4 py-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors';
+                    var el = document.getElementById(tab.elementId);
+                    if (tab.id === filterType) {
+                        el.classList.remove('bg-slate-100', 'text-slate-600', 'hover:bg-slate-200');
+                        el.classList.add('bg-slate-800', 'text-white');
+                    } else {
+                        el.classList.remove('bg-slate-800', 'text-white');
+                        el.classList.add('bg-slate-100', 'text-slate-600', 'hover:bg-slate-200');
+                    }
                 });
                 var tabDef  = TAB_DEFINITIONS.find(function(t){ return t.id===filterType; });
                 var dataset = nodesDataArray.slice();
