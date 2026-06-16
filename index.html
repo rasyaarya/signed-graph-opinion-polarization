@@ -108,8 +108,10 @@
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Balance Index</h3>
                 <div class="group relative flex items-center">
                     <svg class="w-3.5 h-3.5 text-slate-400 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <div class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] font-normal leading-relaxed p-2.5 rounded shadow-lg z-50 text-left">
-                        Mengukur stabilitas berdasarkan Teori Keseimbangan Struktural (Heider). Mengkalkulasi rasio segitiga interaksi yang logis (misal: "musuh dari musuhku adalah temanku"). Muncul "N/A" jika tidak ada segitiga yang terbentuk.
+                    <div class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] font-normal leading-relaxed p-2.5 rounded shadow-lg z-50 text-left">
+                        Mengukur stabilitas jaringan menggunakan Teori Heider (triad keseimbangan).<br><br>
+                        <span class="text-emerald-400 font-bold">100% (Sangat Stabil):</span> Terbentuk struktur polarisasi 2 kubu yang sempurna atau konsensus penuh.<br>
+                        <span class="text-rose-400 font-bold">0% (Sangat Chaos):</span> Banyak pengkhianatan antar kubu atau inkonsistensi opini.
                         <div class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-slate-800"></div>
                     </div>
                 </div>
@@ -593,7 +595,7 @@
                         }
                     }
                 }
-                return { percentage: total===0?null:Math.round((balanced/total)*100), balanced:balanced, total:total };
+                return { percentage: total===0 ? 0 : Math.round((balanced/total)*100), balanced:balanced, total:total };
             }
 
             // ─── INISIALISASI ─────────────────────────────────────────────────────────
@@ -826,7 +828,7 @@
                 var b = calculateBalanceIndex(MOCK_EDGES_RAW);
                 document.getElementById('kpi-aktor').innerText     = ACTOR_IDS.length.toLocaleString('id-ID');
                 document.getElementById('kpi-interaksi').innerText = MOCK_EDGES_RAW.reduce((sum, e) => sum + e.weight, 0).toLocaleString('id-ID');
-                document.getElementById('kpi-balance').innerText   = b.total===0?'0%':(b.percentage+'%');
+                document.getElementById('kpi-balance').innerText   = b.percentage + '%';
             }
 
             // ─── PAPAN PERINGKAT ──────────────────────────────────────────────────────
