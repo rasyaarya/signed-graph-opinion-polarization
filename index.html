@@ -618,9 +618,9 @@
                     avoidOverlap = 0.5;
                 } else if (isolationRatio > 0.3 || (E/N) < 0.5) {
                     // Mode Graf Pecah/Terisolasi (Contoh: graf_pro)
-                    centralGravity = 0.4; // Sedot kuat
-                    springLength = 80;    // Tarik grup kecil erat-erat
-                    gravitationalConstant = -2000; // Tolakan rendah
+                    centralGravity = 0.15; // Turunkan gravitasi agar tidak menggencet ke tengah
+                    springLength = 130;    // Beri ruang lega antar node terhubung
+                    gravitationalConstant = -6000; // Tingkatkan tolakan kuat agar terurai merata
                     avoidOverlap = 1;     // Tolak tumpukan mutlak
                 } else {
                     // Mode Sedang (Contoh: graf_ikn)
