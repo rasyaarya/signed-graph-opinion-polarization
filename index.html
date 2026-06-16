@@ -98,9 +98,17 @@
         </div>
         <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
             <div class="absolute -right-4 -top-4 w-16 h-16 bg-purple-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Balance Index</h3>
+            <div class="flex items-center gap-1.5 mb-1 relative z-10">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Balance Index</h3>
+                <div class="group relative flex items-center">
+                    <svg class="w-3.5 h-3.5 text-slate-400 cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-60 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] font-normal leading-relaxed p-2.5 rounded shadow-lg z-50 text-left">
+                        Mengukur stabilitas berdasarkan Teori Keseimbangan Struktural (Heider). Mengkalkulasi rasio segitiga interaksi yang logis (misal: "musuh dari musuhku adalah temanku"). Muncul "N/A" jika tidak ada segitiga yang terbentuk.
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-slate-800"></div>
+                    </div>
+                </div>
+            </div>
             <p class="text-3xl font-bold text-slate-800 relative z-10" id="kpi-balance">0%</p>
-            <p class="text-[10px] text-slate-400 mt-1 relative z-10">% Balanced Triads (Heider)</p>
         </div>
     </div>
 
