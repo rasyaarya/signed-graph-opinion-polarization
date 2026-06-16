@@ -86,18 +86,24 @@
 
     <!-- KPI Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative group">
+            <div class="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                <div class="absolute -right-4 -top-4 w-16 h-16 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            </div>
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Total Aktor (Nodes)</h3>
             <p class="text-3xl font-bold text-slate-800 relative z-10" id="kpi-aktor">0</p>
         </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative group">
+            <div class="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                <div class="absolute -right-4 -top-4 w-16 h-16 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            </div>
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Total Interaksi (Edges)</h3>
             <p class="text-3xl font-bold text-slate-800 relative z-10" id="kpi-interaksi">0</p>
         </div>
-        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
-            <div class="absolute -right-4 -top-4 w-16 h-16 bg-purple-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 flex flex-col justify-center relative group">
+            <div class="absolute inset-0 rounded-xl overflow-hidden pointer-events-none">
+                <div class="absolute -right-4 -top-4 w-16 h-16 bg-purple-50 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+            </div>
             <div class="flex items-center gap-1.5 mb-1 relative z-10">
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Balance Index</h3>
                 <div class="group relative flex items-center">
@@ -598,7 +604,7 @@
                     interaction: { hover:true, tooltipDelay:120, hideEdgesOnDrag:true, zoomView:true, dragView:true },
                     physics: {
                         solver: 'forceAtlas2Based',
-                        forceAtlas2Based: { gravitationalConstant: -100, centralGravity: 0.01, springLength: 160, springConstant: 0.05, damping: 0.4 },
+                        forceAtlas2Based: { gravitationalConstant: -80, centralGravity: 0.02, springLength: 120, springConstant: 0.05, damping: 0.4 },
                         maxVelocity: 50, timestep: 0.3,
                         stabilization: false
                     }
@@ -750,7 +756,7 @@
                 var b = calculateBalanceIndex(MOCK_EDGES_RAW);
                 document.getElementById('kpi-aktor').innerText     = ACTOR_IDS.length.toLocaleString('id-ID');
                 document.getElementById('kpi-interaksi').innerText = MOCK_EDGES_RAW.reduce((sum, e) => sum + e.weight, 0).toLocaleString('id-ID');
-                document.getElementById('kpi-balance').innerText   = b.total===0?'N/A':(b.percentage+'%');
+                document.getElementById('kpi-balance').innerText   = b.total===0?'0%':(b.percentage+'%');
             }
 
             // ─── PAPAN PERINGKAT ──────────────────────────────────────────────────────
