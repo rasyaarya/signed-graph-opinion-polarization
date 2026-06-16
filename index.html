@@ -667,13 +667,6 @@
                 };
                 networkInstance = new vis.Network(container, { nodes:nodesDataset, edges:edgesDataset }, options);
                 
-                // Hentikan physics setelah 10 detik agar graf besar sempat stabil dan menyatu sebelum dikunci performanya
-                setTimeout(function() {
-                    if (networkInstance) {
-                        networkInstance.setOptions( { physics: false } );
-                    }
-                }, 10000);
-
                 networkInstance.on('click', handleNodeClick);
                 
                 setupSearchBar();
