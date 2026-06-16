@@ -605,8 +605,8 @@
                     physics: {
                         solver: 'barnesHut',
                         barnesHut: { gravitationalConstant: -4000, centralGravity: 0.15, springLength: 150, springConstant: 0.04, damping: 0.09, avoidOverlap: 1 },
-                        maxVelocity: 50, timestep: 0.4,
-                        stabilization: false
+                        maxVelocity: 50, timestep: 0.4, minVelocity: 0.1,
+                        stabilization: { enabled: true, iterations: 200, updateInterval: 50, fit: true }
                     }
                 };
                 networkInstance = new vis.Network(container, { nodes:nodesDataset, edges:edgesDataset }, options);
