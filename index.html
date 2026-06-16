@@ -123,20 +123,39 @@
             </div>
 
             <div id="network-graph" class="rounded-lg flex-1"></div>
-            <div class="absolute bottom-4 left-4 flex flex-wrap gap-2 pointer-events-none">
-                <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
-                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div> Sisi Pro / Dukungan
-                </div>
-                <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
-                    <div class="w-3 h-3 rounded-full bg-rose-500"></div> Sisi Kontra / Kritik
-                </div>
-                <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
-                    <div class="flex gap-0.5">
-                        <div class="w-2 h-3 rounded-l-full" style="background:#e11d48;"></div>
-                        <div class="w-2 h-3" style="background:#94a3b8;"></div>
-                        <div class="w-2 h-3 rounded-r-full" style="background:#059669;"></div>
+            <div class="absolute bottom-4 left-4 flex flex-col gap-1.5 pointer-events-none">
+                <div class="flex flex-wrap gap-1.5">
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+                        <div class="w-3 h-3 rounded-full" style="background:#059669;"></div> Sisi Pro
                     </div>
-                    Node: Kontra &rarr; Pro
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+                        <div class="w-3 h-3 rounded-full" style="background:#E11D48;"></div> Sisi Kontra
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-slate-200">
+                        <div class="flex gap-0.5">
+                            <div class="w-2 h-3 rounded-l-full" style="background:#E11D48;"></div>
+                            <div class="w-2 h-3" style="background:#94a3b8;"></div>
+                            <div class="w-2 h-3 rounded-r-full" style="background:#059669;"></div>
+                        </div>
+                        Node: Kontra &rarr; Pro
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-slate-500">&#9679;</span> Masyarakat
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-slate-500">&#9632;</span> Pemerintah
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-slate-500">&#9670;</span> Media
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-yellow-500">&#9733;</span> Influencer
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-slate-500">&#9650;</span> Komunitas
+                    </div>
                 </div>
             </div>
         </div>
@@ -179,7 +198,7 @@
             let pageRankMap     = new Map();
             let currentActiveFilter = 'Opinion Leaders';
 
-            const COLOR = { POS_EDGE: '#10B981', NEG_EDGE: '#F43F5E' };
+            const COLOR = { POS_EDGE: '#059669', NEG_EDGE: '#E11D48', NEUTRAL_EDGE: '#94a3b8' };
 
             // ─── HELPER: SET STATUS UI ────────────────────────────────────────────────
             function setStatus(color, text) {
@@ -439,6 +458,17 @@
                 };
             }
 
+            function resolveNodeShape(role) {
+                var shapeMap = {
+                    'Masyarakat': 'dot',
+                    'Pemerintah': 'square',
+                    'Media':      'diamond',
+                    'Influencer': 'star',
+                    'Komunitas':  'triangle'
+                };
+                return shapeMap[role] || 'dot';
+            }
+
             function buildTooltipElement(id, prPos, prNeg, prNet, inDeg, outDeg, roleText) {
                 var colors   = resolveNodeColors(prNet);
                 var prColor  = colors.border;
@@ -465,8 +495,8 @@
                 return ACTOR_IDS.map(function(id) {
                     var pr    = pageRankMap.get(id);
                     var deg   = computeDegrees(id);
-                    var absI  = Math.abs(pr.pr_net);
-                    var sz    = Math.max(absI * 45, 10);
+                    var totalDeg = deg.in_degree + deg.out_degree;
+                    var sz       = Math.max(Math.log1p(totalDeg) * 10, 6);
                     var cols  = resolveNodeColors(pr.pr_net);
                     var meta  = nodeDataMap.get(id) || { role: 'Unknown' };
                     
@@ -475,7 +505,7 @@
                         pr_net: pr.pr_net, pr_pos: pr.pr_pos, pr_neg: pr.pr_neg,
                         in_degree: deg.in_degree, out_degree: deg.out_degree,
                         role: meta.role,
-                        value: sz, color: cols, borderWidth: 2.5,
+                        value: sz, shape: resolveNodeShape(meta.role), color: cols, borderWidth: 2.5,
                         font: { size:10, face:'inherit', color:'#1e293b', strokeWidth:3, strokeColor:'#ffffff' },
                         title: buildTooltipElement(id, pr.pr_pos, pr.pr_neg, pr.pr_net, deg.in_degree, deg.out_degree, meta.role),
                         shadow: { enabled:true, color:'rgba(0,0,0,0.07)', size:6, x:2, y:2 }
@@ -485,14 +515,14 @@
 
             function buildEdgeData() {
                 return MOCK_EDGES_RAW.map(function(e) {
-                    // Warna edge mengikuti sentimen, jika 0 maka abu-abu
-                    var c = e.sentimen === 1 ? COLOR.POS_EDGE : (e.sentimen === -1 ? COLOR.NEG_EDGE : '#cbd5e1');
+                    // Warna edge mengikuti sentimen: hijau (Pro), merah (Kontra), abu-abu (Unknown)
+                    var c = e.sentimen === 1 ? COLOR.POS_EDGE : (e.sentimen === -1 ? COLOR.NEG_EDGE : COLOR.NEUTRAL_EDGE);
                     return {
                         id: e.id, from: e.from, to: e.to,
                         sentimen: e.sentimen, weight: e.weight,
-                        color: { color:c, highlight:c, hover:c, opacity:0.6 },
-                        arrows: { to: { enabled:true, scaleFactor:0.5 } },
-                        width: 0.8 + (e.weight || 1) * 0.4
+                        color: { color: c, highlight: c, hover: c, opacity: 0.75 },
+                        arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+                        width: 1.2 + (e.weight || 1) * 0.5
                     };
                 });
             }
@@ -541,10 +571,9 @@
                 edgesDataset   = new vis.DataSet(edgesDataArray);
                 var options = {
                     nodes: {
-                        shape: 'dot',
                         scaling: {
                             customScalingFunction: function(min,max,total,value){ return max===0?0.5:value/max; },
-                            min:10, max:45
+                            min: 8, max: 55
                         }
                     },
                     edges: { smooth:{ type:'dynamic' } },
@@ -627,7 +656,7 @@
                     return {
                         id: e.id,
                         color: cedges.has(e.id)
-                            ? { color: e.sentimen===1?COLOR.POS_EDGE:(e.sentimen===-1?COLOR.NEG_EDGE:'#cbd5e1'), opacity:1 }
+                            ? { color: e.sentimen===1?COLOR.POS_EDGE:(e.sentimen===-1?COLOR.NEG_EDGE:COLOR.NEUTRAL_EDGE), opacity:1 }
                             : { color:'#e2e8f0', opacity:0.07 }
                     };
                 }));
@@ -638,7 +667,7 @@
                     return { id:n.id, color:resolveNodeColors(n.pr_net), font:{ color:'#1e293b' } };
                 }));
                 edgesDataset.update(edgesDataArray.map(function(e) {
-                    return { id:e.id, color:{ color:e.sentimen===1?COLOR.POS_EDGE:(e.sentimen===-1?COLOR.NEG_EDGE:'#cbd5e1'), opacity:0.6 } };
+                    return { id:e.id, color:{ color:e.sentimen===1?COLOR.POS_EDGE:(e.sentimen===-1?COLOR.NEG_EDGE:COLOR.NEUTRAL_EDGE), opacity:0.75 } };
                 }));
             }
 
