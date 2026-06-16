@@ -571,20 +571,20 @@
                     edges: { smooth:{ type:'dynamic' } },
                     interaction: { hover:true, tooltipDelay:120, hideEdgesOnDrag:true, zoomView:true, dragView:true },
                     physics: {
-                        solver: 'barnesHut',
-                        barnesHut: { gravitationalConstant: -15000, centralGravity: 0.1, springLength: 250, springConstant: 0.05, damping: 0.09, avoidOverlap: 1 },
-                        maxVelocity: 50, timestep: 0.4,
+                        solver: 'forceAtlas2Based',
+                        forceAtlas2Based: { gravitationalConstant: -100, centralGravity: 0.01, springLength: 160, springConstant: 0.05, damping: 0.4 },
+                        maxVelocity: 50, timestep: 0.3,
                         stabilization: false
                     }
                 };
                 networkInstance = new vis.Network(container, { nodes:nodesDataset, edges:edgesDataset }, options);
                 
-                // Hentikan physics setelah 6 detik agar performa browser tidak berat, tapi graf sempat mengembang
+                // Hentikan physics setelah 8 detik agar performa browser tidak berat, namun ForceAtlas2 sempat membentuk kluster
                 setTimeout(function() {
                     if (networkInstance) {
                         networkInstance.setOptions( { physics: false } );
                     }
-                }, 6000);
+                }, 8000);
 
                 networkInstance.on('click', handleNodeClick);
                 
