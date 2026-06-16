@@ -584,6 +584,67 @@
 
             // ─── INISIALISASI ─────────────────────────────────────────────────────────
 
+            function getDynamicPhysics(nodes, edges) {
+                var N = nodes.length || 1;
+                var E = edges.length || 0;
+                
+                var degrees = new Map();
+                nodes.forEach(function(n) { degrees.set(n.id, 0); });
+                edges.forEach(function(e) {
+                    degrees.set(e.from, (degrees.get(e.from) || 0) + 1);
+                    degrees.set(e.to, (degrees.get(e.to) || 0) + 1);
+                });
+                
+                var isolated = 0;
+                var maxDegree = 0;
+                degrees.forEach(function(d) {
+                    if (d === 0) isolated++;
+                    if (d > maxDegree) maxDegree = d;
+                });
+                
+                var isolationRatio = isolated / N;
+                
+                // Setelan Default (Balanced)
+                var centralGravity = 0.15;
+                var springLength = 120;
+                var gravitationalConstant = -3000;
+                var avoidOverlap = 0.8;
+                
+                if (N > 800) {
+                    // Mode Graf Masif (Contoh: graf_kontra)
+                    gravitationalConstant = -8000;
+                    springLength = 200;
+                    centralGravity = 0.05;
+                    avoidOverlap = 0.5;
+                } else if (isolationRatio > 0.3 || (E/N) < 0.5) {
+                    // Mode Graf Pecah/Terisolasi (Contoh: graf_pro)
+                    centralGravity = 0.4; // Sedot kuat
+                    springLength = 80;    // Tarik grup kecil erat-erat
+                    gravitationalConstant = -2000; // Tolakan rendah
+                    avoidOverlap = 1;     // Tolak tumpukan mutlak
+                } else {
+                    // Mode Sedang (Contoh: graf_ikn)
+                    centralGravity = 0.2;
+                    springLength = 120;
+                    gravitationalConstant = -3000;
+                    avoidOverlap = 0.7;
+                }
+
+                return {
+                    solver: 'barnesHut',
+                    barnesHut: { 
+                        gravitationalConstant: gravitationalConstant, 
+                        centralGravity: centralGravity, 
+                        springLength: springLength, 
+                        springConstant: 0.04, 
+                        damping: 0.09, 
+                        avoidOverlap: avoidOverlap 
+                    },
+                    maxVelocity: 50, timestep: 0.4, minVelocity: 0.1,
+                    stabilization: { enabled: true, iterations: 200, updateInterval: 50, fit: true }
+                };
+            }
+
             function initializeNetwork(containerId) {
                 if (networkInstance) {
                     networkInstance.destroy();
@@ -602,12 +663,7 @@
                     },
                     edges: { smooth:{ type:'dynamic' } },
                     interaction: { hover:true, tooltipDelay:120, hideEdgesOnDrag:true, zoomView:true, dragView:true },
-                    physics: {
-                        solver: 'barnesHut',
-                        barnesHut: { gravitationalConstant: -4000, centralGravity: 0.15, springLength: 150, springConstant: 0.04, damping: 0.09, avoidOverlap: 1 },
-                        maxVelocity: 50, timestep: 0.4, minVelocity: 0.1,
-                        stabilization: { enabled: true, iterations: 200, updateInterval: 50, fit: true }
-                    }
+                    physics: getDynamicPhysics(nodesDataArray, edgesDataArray)
                 };
                 networkInstance = new vis.Network(container, { nodes:nodesDataset, edges:edgesDataset }, options);
                 
