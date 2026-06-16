@@ -584,15 +584,17 @@
                     physics: {
                         forceAtlas2Based: { gravitationalConstant:-60, centralGravity:0.012, springLength:140, springConstant:0.05, damping:0.4 },
                         maxVelocity:50, solver:'forceAtlas2Based', timestep:0.3,
-                        stabilization:{ iterations:200, updateInterval:20 }
+                        stabilization: false
                     }
                 };
                 networkInstance = new vis.Network(container, { nodes:nodesDataset, edges:edgesDataset }, options);
                 
-                // Hentikan physics setelah stabil agar performa tidak drop pada node > 1000
-                networkInstance.on("stabilizationIterationsDone", function () {
-                    networkInstance.setOptions( { physics: false } );
-                });
+                // Hentikan physics setelah 4 detik agar performa browser tidak berat
+                setTimeout(function() {
+                    if (networkInstance) {
+                        networkInstance.setOptions( { physics: false } );
+                    }
+                }, 4000);
 
                 networkInstance.on('click', handleNodeClick);
                 
