@@ -171,6 +171,12 @@
                     <div onclick="Dashboard.highlightLegend('role', 'Komunitas')" class="pointer-events-auto cursor-pointer hover:bg-slate-50 transition-colors flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
                         <span class="text-slate-500">&#9650;</span> Komunitas
                     </div>
+                    <div onclick="Dashboard.highlightLegend('role', 'Partai')" class="pointer-events-auto cursor-pointer hover:bg-slate-50 transition-colors flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-slate-500">&#11042;</span> Partai
+                    </div>
+                    <div onclick="Dashboard.highlightLegend('role', 'AI')" class="pointer-events-auto cursor-pointer hover:bg-slate-50 transition-colors flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full shadow-sm border border-slate-200">
+                        <span class="text-slate-500">&#9673;</span> AI
+                    </div>
                 </div>
             </div>
         </div>
@@ -488,7 +494,9 @@
                     'Pemerintah': 'square',
                     'Media':      'diamond',
                     'Influencer': 'star',
-                    'Komunitas':  'triangle'
+                    'Komunitas':  'triangle',
+                    'Partai':     'hexagon',
+                    'AI':         'database'
                 };
                 return shapeMap[role] || 'dot';
             }
