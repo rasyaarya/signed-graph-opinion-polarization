@@ -603,9 +603,9 @@
                     edges: { smooth:{ type:'dynamic' } },
                     interaction: { hover:true, tooltipDelay:120, hideEdgesOnDrag:true, zoomView:true, dragView:true },
                     physics: {
-                        solver: 'forceAtlas2Based',
-                        forceAtlas2Based: { gravitationalConstant: -80, centralGravity: 0.02, springLength: 120, springConstant: 0.05, damping: 0.4 },
-                        maxVelocity: 50, timestep: 0.3,
+                        solver: 'repulsion',
+                        repulsion: { nodeDistance: 80, centralGravity: 0.1, springLength: 100, springConstant: 0.05, damping: 0.09 },
+                        maxVelocity: 50, timestep: 0.4,
                         stabilization: false
                     }
                 };
